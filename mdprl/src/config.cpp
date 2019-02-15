@@ -61,6 +61,34 @@ std::vector<std::pair<int, int>> ReadDepotConfig(const char* filename) {
     }
 }
 
+std::vector<std::pair<int, int>> ReadGridWorldConfig(const char* filename) {
+    std::ifstream input_file(filename);
+    if (input_file) {
+        std::string line;
+        std::vector< std::pair<int, int> > parameters;
+        while ( getline(input_file, line ) ) {
+            std::istringstream is( line );
+            std::istream_iterator<double> iit (is);
+            std::istream_iterator<double> eos;
+            if (iit != eos) {
+                int first, second;
+                first = *iit;
+                ++iit;
+                if (iit != eos) {
+                    second = *iit;
+                    parameters.push_back(std::make_pair(first, second));
+                }
+            }
+        }
+        input_file.close();
+        return parameters;
+    } else {
+        std::perror(filename);
+        std::cout << "Unable to open:" << filename << std::endl;
+        exit(1); // terminate with error
+    }
+}
+
 std::vector<std::vector<int>> ReadRaceTrackConfig(const char* filename) {
     std::ifstream input_file(filename);
     if (input_file) {

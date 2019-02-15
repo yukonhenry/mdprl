@@ -27,13 +27,6 @@ RaceTrackOperations::RaceTrackOperations(const char* filename) {
 }
 
 Position RaceTrackOperations::RandomizeStartLocation() {
-    /*
-    int number_starting_positions = (int) std::count(starting_row.begin(), starting_row.end(), 1);
-    int index = 0;
-    while (starting_row.at(index) != 1)
-        ++index;
-    int starting_index = index + rand() % number_starting_positions;
-     */
     int randomized_start_index = rand() % number_starting_positions;
     int starting_index = starting_row_indices.at(randomized_start_index);
     Position start_pos = Position(starting_index, 0);

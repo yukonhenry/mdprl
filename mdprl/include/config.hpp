@@ -22,4 +22,6 @@ std::vector<std::pair<int, int>> ReadDepotConfig(const char*);
 
 std::vector<std::vector<int>> ReadRaceTrackConfig(const char*);
 
+std::vector<std::pair<int, int>> ReadGridWorldConfig(const char*);
+
 #endif /* config_hpp */

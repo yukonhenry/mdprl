@@ -11,14 +11,14 @@
 #include "racetrack_vehicle.hpp"
 
 TEST_CASE("Confirm start location generated correctly") {
-    RaceTrackOperations operations = RaceTrackOperations("racetrack_config_small.txt");
+    RaceTrackOperations operations = RaceTrackOperations("mc_example/racetrack_config_small.txt");
     RaceTrackVehicle vehicle = RaceTrackVehicle(operations.RandomizeStartLocation());
     REQUIRE(vehicle.velocity.x == 0);
     REQUIRE(vehicle.velocity.y == 0);
 }
 
 TEST_CASE("Confirm Racetrack position detector detects positions that are outside of track") {
-    RaceTrackOperations rtl = RaceTrackOperations("racetrack_config_small.txt");
+    RaceTrackOperations rtl = RaceTrackOperations("mc_example/racetrack_config_small.txt");
     Velocity v = Velocity(0, 0);
     Position old_pos = Position(0, 0);
     REQUIRE(rtl.detectTrackPositionStatus(Position(-1, 0), old_pos, v) == TrackPositionStatus::OFF_TRACK);
@@ -27,7 +27,7 @@ TEST_CASE("Confirm Racetrack position detector detects positions that are outsid
 }
 
 TEST_CASE("Confirm Racetrack position detector detects positions that hit obstacle") {
-    RaceTrackOperations rtl = RaceTrackOperations("racetrack_config_small.txt");
+    RaceTrackOperations rtl = RaceTrackOperations("mc_example/racetrack_config_small.txt");
     Velocity v = Velocity(0, 0);
     Position old_pos = Position(0, 0);
     REQUIRE(rtl.detectTrackPositionStatus(Position(0, 0), old_pos, v) == TrackPositionStatus::OFF_TRACK);
@@ -36,7 +36,7 @@ TEST_CASE("Confirm Racetrack position detector detects positions that hit obstac
 }
 
 TEST_CASE("Confirm Racetrack position detector detects positions on track") {
-    RaceTrackOperations rtl = RaceTrackOperations("racetrack_config_small.txt");
+    RaceTrackOperations rtl = RaceTrackOperations("mc_example/racetrack_config_small.txt");
     Velocity v = Velocity(0, 0);
     Position old_pos = Position(0, 0);
     REQUIRE(rtl.detectTrackPositionStatus(Position(1, 0), old_pos, v) == TrackPositionStatus::ON_TRACK);
@@ -46,7 +46,7 @@ TEST_CASE("Confirm Racetrack position detector detects positions on track") {
 }
 
 TEST_CASE("Confirm Racetrack position detector detects goal or passing of goal") {
-    RaceTrackOperations rtl = RaceTrackOperations("racetrack_config_small.txt");
+    RaceTrackOperations rtl = RaceTrackOperations("mc_example/racetrack_config_small.txt");
     Velocity v0 = Velocity(0, 0);
     Position old_pos = Position(0, 0);
     REQUIRE(rtl.detectTrackPositionStatus(Position(4, 1), old_pos, v0) == TrackPositionStatus::GOAL);

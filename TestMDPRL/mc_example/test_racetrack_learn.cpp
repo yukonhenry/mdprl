@@ -11,7 +11,7 @@
 #include "racetrack_learn.hpp"
 
 TEST_CASE("Instantiate Racetrack learn object and read back properties") {
-    RaceTrackOperations operations = RaceTrackOperations("racetrack_configLL.txt");
+    RaceTrackOperations operations = RaceTrackOperations("mc_example/racetrack_configLL.txt");
     RaceTrackLearn learn = RaceTrackLearn(operations);
     learn.OffPolicyControl();
     REQUIRE(true);

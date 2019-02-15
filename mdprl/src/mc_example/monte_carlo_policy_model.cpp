@@ -11,7 +11,6 @@
 #include <tuple>
 #include "monte_carlo_policy_model.hpp"
 #include "vehicle_physics.hpp"
-const int kMaxInitialValue = 10;
 const int kRewardPerStep = -1;
 const double kUniDistUpperBound = 2.0;
 
@@ -43,8 +42,6 @@ cumulative_weight_matrix(grid_width,
                     for (int m = 0; m < total_action_count; ++m) {
                         std::vector<double> action_y_vector;
                         for (int n = 0; n < total_action_count; ++n) {
-                            //double random_pos = double(std::rand() % kMaxInitialValue);
-                            //action_y_vector.push_back(-random_pos);
                             action_y_vector.push_back(default_cost);
                         }
                         action_matrix.push_back(action_y_vector);
@@ -126,8 +123,6 @@ void MonteCarloPolicyModel::EpisodeUntilGoalOrWall(std::vector<std::tuple<Positi
                                                    BPolicyProb>>& state_actions,
                                                    RaceTrackOperations& operations, RaceTrackVehicle& vehicle) {
     while (vehicle.position_status == TrackPositionStatus::ON_TRACK) {
-        //Accel bpolicy_accel = ExecuteBPolicy();
-        //vehicle.UpdateVehicleWithAccelAction(bpolicy_accel);
         auto accel_prob = ExecuteValidBPolicyUpdateVehicle(operations, vehicle);
         Accel accel = accel_prob.first;
         BPolicyProb prob = accel_prob.second;
@@ -148,10 +143,7 @@ MonteCarloPolicyModel::ExecuteEpisode(RaceTrackOperations& operations, RaceTrack
     while (vehicle.position_status != TrackPositionStatus::GOAL) {
         EpisodeUntilGoalOrWall(state_actions, operations, vehicle);
         if (vehicle.position_status == TrackPositionStatus::GOAL) {
-            //std::cout << "state action vec size:" << state_actions.size() << std::endl;
-            //std::cout << "goal reached !!" << std::endl;
         } else if (vehicle.position_status == TrackPositionStatus::OFF_TRACK) {
-            //std::cout << "out of bounds!!!" << std::endl;
             vehicle.ResetVehicle(operations.RandomizeStartLocation());
         } else {
             throw std::logic_error("Unexpected TrackPositionStatus!");
@@ -173,7 +165,6 @@ std::pair<int, int> MonteCarloPolicyModel::MapAccelToIndex(Accel& a) {
 }
 
 void MonteCarloPolicyModel::UpdateCumulativeWeightStateActionMatrix(double weight, int g_reward, Position& p, Velocity& v, Accel& a) {
-    //DebugPrint(p, v, a, "cumulative update");
     std::pair<int, int> accel_index = MapAccelToIndex(a);
     int updated_cumulative_weight =
     cumulative_weight_matrix.at(p.x).at(p.y).at(v.x).at(v.y).at(accel_index.first).at(accel_index.second) + weight;
@@ -202,7 +193,6 @@ std::vector<std::pair<int, int>> MonteCarloPolicyModel::FindMaxActionForQState(P
             }
         }
     }
-    //policy[{p.x, p.y, v.x, v.y}] = max_action;
     return max_actions;
 }
 
@@ -242,14 +232,11 @@ std::pair<bool, int> MonteCarloPolicyModel::ExecuteProcessEpisode(RaceTrackOpera
         UpdateCumulativeWeightStateActionMatrix(weight, Greward, p, v, a);
         auto max_actions = FindMaxActionForQState(p, v);
         if (!CompareMaxActionToCurrentAccelSetPolicy(max_actions, p, v, a)) {
-            //std::cout << "Episode policy improvement does not match current action, breaking from episode" << std::endl;
             complete_episode_flag = false;
             break;
         }
         weight = weight / (prob.x * prob.y);
-        //std::cout << "****updated Weight:" << weight << std::endl;
     }
-    //std::cout << "Greward: " << Greward << std::endl;
     return std::make_pair(complete_episode_flag, Greward);
 }
 

@@ -42,15 +42,6 @@ void RaceTrackLearn::OffPolicyControl() {
                     std::endl;
                 }
             }
-            /*
-            if (g_reward > best_g_reward) {
-                best_g_reward = g_reward;
-                count = 0;
-                std::cout << "--best_g_reward updated:" << best_g_reward << std::endl;
-            } else {
-                ++count;
-                std::cout << "^^^g_reward:" << g_reward << " best:" << best_g_reward << " count:" << count << std::endl;
-            } */
         } else {
             //std::cout << "&& Partial Episode Match" << std::endl;
         }

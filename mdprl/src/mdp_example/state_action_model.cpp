@@ -13,7 +13,7 @@
 StateActionModel::StateActionModel(int max_value, int action_cost, int outflow_reward, double discount):
     max_state_value(max_value), poisson(Poisson(max_value + 1)), cost_per_action(action_cost),
     reward_per_outflow(outflow_reward), reward_discount(discount) {
-    mean_rates = ReadDepotConfig("./depot_config.txt");
+    mean_rates = ReadDepotConfig("mdp_example/depot_config.txt");
     num_states = (int) mean_rates.size();
 };
 
